@@ -29,6 +29,8 @@ cap_height = 500 * scale_factor;
 
 base_d = d * 1.15; // base is wider
 cap_d = d * 1.25;  // cap is widest
+cap_ring_h = cap_height*0.25; // height of the ring part of the cap
+top_ball_r = cap_d / 12;
 
 module pillar() {
   translate([0,0,base_height]){
@@ -47,8 +49,7 @@ module base() {
 
 module cap() {
   top = base_height + body_height;
-  cap_ring_h = cap_height*0.25; // height of the ring part of the cap
-  cap_ring_fillet = floor(cap_height*0.25 / 2);
+  cap_ring_fillet = floor(cap_ring_h / 2);
 
   up(top) {
     union() {
@@ -63,13 +64,20 @@ module dome() {
   semisphere_r = cap_d - 3;
   semisphere_h = semisphere_r * 0.75; // height of the dome
 
-  difference() {
-    down(semisphere_h / 4) {
-      sphere(semisphere_r / 2);
+  union() {
+    difference() {
+      down(semisphere_h / 4) {
+        sphere(semisphere_r / 2);
+      }
+
+      down(semisphere_h - 2) {
+        cylinder(h=semisphere_h, d=semisphere_r);
+      }
     }
 
-    down(semisphere_h - 2) {
-      cylinder(h=semisphere_h, d=semisphere_r);
+    // top ball
+    up(cap_ring_h + (semisphere_h / 4) + top_ball_r) {
+      sphere(r=top_ball_r);
     }
   }
 }
