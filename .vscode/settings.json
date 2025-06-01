@@ -1,4 +1,7 @@
 {
     "editor.defaultFormatter": "Antyos.openscad",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "scad-lsp.searchPaths": "${workspaceRoot}/libs",
+    "scad-lsp.defaultParam": false,
+    "scad-lsp.fmtIdent": "\"  \""
 }
