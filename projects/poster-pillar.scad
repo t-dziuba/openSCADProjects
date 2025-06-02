@@ -34,17 +34,28 @@ top_ball_r = cap_d / 12;
 
 module pillar() {
   translate([0,0,base_height]){
-    cylinder(h=body_height, d=d);
+    difference() {
+      cylinder(h=body_height, d=d);
+      cylinder(h=body_height, d=d - 2);
+    }
   }
 }
 
 module base() {
-  cylinder(h=base_height, d=base_d);
-  torus(r=base_d / 2, r2=3);
+  cylinder(h=base_height, d=base_d - 3.2);
+  torus(r=(base_d / 2) - 2, r2=3);
+
   up(5.2){
-    torus(r=(base_d / 2) - 3, r2=2.8);
+    torus(r=(base_d / 2) - 4, r2=2.8);
   }
-  cylinder(h=base_height / 2, d=base_d + 2);
+
+  up(0.25){
+    cyl(l=2.5, d=base_d + 3, fillet=0.75);
+  }
+
+  down(3) {
+    cylinder(h=3, d=base_d + 3);
+  }
 }
 
 module cap() {
@@ -64,20 +75,22 @@ module dome() {
   semisphere_r = cap_d - 3;
   semisphere_h = semisphere_r * 0.75; // height of the dome
 
-  union() {
-    difference() {
-      down(semisphere_h / 4) {
-        sphere(semisphere_r / 2);
+  difference() {
+    union() {
+      difference() {
+        down(semisphere_h / 4) {
+          sphere(semisphere_r / 2);
+        }
+
+        down(semisphere_h - 2) {
+          cylinder(h=semisphere_h, d=semisphere_r);
+        }
       }
 
-      down(semisphere_h - 2) {
-        cylinder(h=semisphere_h, d=semisphere_r);
+      // top ball
+      up(cap_ring_h + (semisphere_h / 4) + top_ball_r) {
+        sphere(r=top_ball_r);
       }
-    }
-
-    // top ball
-    up(cap_ring_h + (semisphere_h / 4) + top_ball_r) {
-      sphere(r=top_ball_r);
     }
   }
 }
